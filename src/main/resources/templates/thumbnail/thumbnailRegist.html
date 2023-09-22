@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+  <meta charset="UTF-8" />
+  <script type="text/javascript" src="/js/event.js"></script>
+</head>
+<body>
+<div th:replace="common/header.html"></div>
+<div style="margin-top: 100px;">
+  <h1 align="center">사진게시판 작성</h1>
+  <form id="thumbnailRegistForm" action="/thumbnail/regist" method="post" enctype="multipart/form-data">
+    <div>
+      <table align="center">
+        <tr>
+          <td style="width: 100px">제목</td>
+          <td colspan="3"><input type="text" size="45" name="title"></td>
+        </tr>
+        <tr>
+          <td>대표 이미지</td>
+          <td colspan="3">
+            <div class="image-area">
+              <img style="width: 350px; height: 200px;">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>내용 사진</td>
+          <td>
+            <div class="image-area">
+              <img style="width: 120px; height: 100px;">
+            </div>
+          </td>
+          <td>
+            <div class="image-area">
+              <img style="width: 120px; height: 100px;">
+            </div>
+          </td>
+          <td>
+            <div class="image-area">
+              <img style="width: 120px; height: 100px;">
+            </div>
+          </td>
+
+        </tr>
+        <tr>
+          <td style="width: 100px">사진 메모</td>
+          <td colspan="3"><textarea name="body" rows="5" cols="50" style="resize: none;"></textarea></td>
+        </tr>
+      </table>
+      <div style="display: none;">
+        <input type="file" name="attachImage" accept="image/gif,image/jpeg,image/png">
+        <input type="file" name="attachImage" accept="image/gif,image/jpeg,image/png">
+        <input type="file" name="attachImage" accept="image/gif,image/jpeg,image/png">
+        <input type="file" name="attachImage" accept="image/gif,image/jpeg,image/png">
+      </div>
+    </div>
+    <br>
+    <div align="center">
+      <button type="button" onclick="location.href='/thumbnail/list'">돌아가기</button>
+      <button type="reset">취소하기</button>
+      <button type="submit">작성완료</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  <!--즉시실행함수 -변수가 여기 스코프에서만 사용가능해서 중복된것도 영향이없게된다. -->
+  (function (){
+    /*div image area 요소
+    * */
+    const imageArea = document.querySelectorAll(".image-area");//클래스명.image-area 을 모두 가져옴 input파일 총4개있음.
+
+    /*input type =file요소*/
+    const fileElements = document.querySelectorAll("[type=file]");//[type=file]타입을 모두 가져온다.
+
+    /*div 클릭시 open 함수 동작하여 input type=file 클릭*/
+    imageArea.forEach(item => item.addEventListener('click',open));//div마다 클릭이벤트를 부착시켜줌
+
+    /*파일 첨부가 발생하는 상황에 preview 함수 동작 */
+    fileElements.forEach(item => item.addEventListener('change',preview));
+
+
+
+
+
+    function open() {//open():이벤트 핸들러 함수 에서 this는 이벤트 함수가 발생한것을 가리킴
+      //Array.from(imageArea):배열과 유사한것으로 배열화 시켜서 사용
+      const index =Array.from(imageArea).indexOf(this);//this ->open이라는 이벤트가 발생한 index가 무엇인지 반환됨.
+      fileElements[index].click();
+    } //자바스크립트 오류는 브라우저에 콘솔창에서 확인해서 에러 수정
+
+    function preview(){
+      const index = Array.from(fileElements).indexOf(this);//이벤트가 발생한 index
+
+      console.log(this);
+      console.log(this.files, this.files[0]);
+
+      /*첨부 된 파일이 존재한다면*/
+      if(this.files && this.files[0]) {//this.files && this.files[0]존재한다면
+        const reader = new FileReader();//파일을 읽어주는 web api :FileReader
+        reader.readAsDataURL(this.files[0]);
+        /*파일 로드 후 동작하는 이벤트 설정*/
+        reader.onload = function (){
+          console.log(reader.result);
+          if(index == 0){
+            imageArea[index].innerHTML = `<img src='${reader.result}' style='width:350px;height:200px'>`;//클라이언트에 보여지는 부분을 핸들링함
+
+          }else {
+            imageArea[index].innerHTML = `<img src='${reader.result}' style='width:120px;height:100px'>`;
+          }
+
+        }
+      }
+    }
+
+  })();
+</script>
+
+</body>
+</html>

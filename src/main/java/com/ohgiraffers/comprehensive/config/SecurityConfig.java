@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 /*hasRole에 전달하는 값은 "ROLE_"가 자동으로 앞에 붙는다.*/
                 .antMatchers("/css/**", "/js/**",  "/images/**").permitAll()
-                .antMatchers("/board/**","/thumbnail/**","/member/update","/member/delete").hasRole("MEMBER")
+                .antMatchers("/board/**","/thumbnail/**","/member/update","/member/delete").hasRole("MEMBER")//계속 로그인하면서 실행확인해야해서 우선 주석처리해놓음
                 /* 위에 서술된 패턴 외의 요청은 인증되지 않은 사용자도 요청 허가*/
                 .anyRequest().permitAll()
                 .and()

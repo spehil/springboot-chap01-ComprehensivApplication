@@ -1,5 +1,6 @@
 package com.ohgiraffers.comprehensive.member.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -25,6 +26,7 @@ public class MemberDTO implements UserDetails {//implements UserDetails 반드�
     private  String memberStatus;
     private List<MemberRoleDTO> memberRoleList;
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> roles = new HashSet<>();

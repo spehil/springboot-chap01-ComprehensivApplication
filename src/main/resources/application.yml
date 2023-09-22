@@ -6,7 +6,20 @@ spring:
     username: C##SPRING
     password: SPRING
 
+
+#file upload config
+    servlet:
+      multipart:
+        max-file-size: 10MB
+        max-request-size: 10MB
+        location: C:/Lecture/spring-comprehensive/chap01-comprehensive/
+
+
 #Mybatis config
 mybatis:
   mapper-locations: mappers/**/*.xml
+
+#image upload dir
+image:
+  image-dir: C:/Lecture/spring-comprehensive/chap01-comprehensive/src/main/resources/upload/
 
